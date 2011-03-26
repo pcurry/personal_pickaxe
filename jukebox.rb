@@ -1,6 +1,7 @@
 
 class Song
   @@plays = 0
+  # Class variable tracks the total number of plays of all songs.
   
   attr_reader :name, :artist, :duration
   attr_writer :duration
@@ -23,6 +24,14 @@ class Song
   def play
     @plays += 1 
     @@plays += 1 
+  end
+
+  def [](from_time, to_time)
+    result = Song.new(self.title + " [extract]",
+                      self.artist, 
+                      to_time - from_time)
+    result.set_start_time(from_time)
+    result
   end
 end
 
@@ -131,5 +140,16 @@ class VU
   def succ
     raise(IndexError, "Volume too big") if @volume >= 9
     VU.new(@volume.succ)
+  end
+end
+
+
+class Amplifier
+  def initialize(volume)  # 0..9
+    self.left_channel = self.right_channel = volume
+  end
+
+  def volume=(new_volume)
+    self.left_channel = self.right_channel = new_volume
   end
 end
