@@ -1,5 +1,7 @@
 
 class Song
+  include Comparable
+
   @@plays = 0
   # Class variable tracks the total number of plays of all songs.
   
@@ -11,6 +13,10 @@ class Song
     @artist   = artist
     @duration = duration
     @plays    = 0
+  end
+
+  def <=>(other)
+    self.duration <=> other.duration
   end
 
   def to_s
@@ -151,5 +157,19 @@ class Amplifier
 
   def volume=(new_volume)
     self.left_channel = self.right_channel = new_volume
+  end
+end
+
+class VowelFinder
+  include Enumerable
+  
+  def initialize(string)
+    @string = string
+    end
+
+  def each
+    @string.scan(/[aeiou]/) do |vowel|
+      yield vowel
+    end
   end
 end
