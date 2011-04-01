@@ -25,5 +25,65 @@ def show_regexp(a, re)
 end
 
 
+class VowelFinder
+  include Enumerable
+  
+  def initialize(string)
+    @string = string
+    end
 
+  def each
+    @string.scan(/[aeiou]/) do |vowel|
+      yield vowel
+    end
+  end
+end
 
+module Summable
+  def sum
+    inject {|v,n| v+n}
+  end
+end
+
+module Observable
+  # Naively implemented code to enable observer pattern?
+  def observers
+    @observer_list ||= []
+  end
+  
+  def add_observer(obj)
+    observers << obj
+    end
+
+  def notify_observers
+    observers.each {|o| o.update }
+  end
+end
+
+class TelescopeScheduler
+  # other classes can register to get notifications
+  # when the schedule changes
+  include Observable
+  def initialize
+    @observer_list = [] # folks with telescope time
+  end
+
+  def add_viewer(viewer)
+    @observer_list << viewer
+  end
+  # ... Here's where it could all go badly wrong.
+end
+
+module Test
+  State = {}
+  def state=(value)
+    State[object_id] = value
+  end
+  def state
+    State[object_id]
+  end
+end
+
+class Client 
+  include Test
+end
